@@ -26,7 +26,7 @@ public class GUI extends JFrame {
     private long minutes = 0;
     private long seconds = 0;
 
-    public GUI() {
+    public GUI(boolean instaStart) {
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setSize(150, 150);
         this.setLocationRelativeTo(null);
@@ -35,6 +35,10 @@ public class GUI extends JFrame {
         this.initComponents();
         this.addComponents();
         this.setVisible(true);
+
+        if (instaStart) {
+            this.start();
+        }
     }
 
     private void initComponents() {
