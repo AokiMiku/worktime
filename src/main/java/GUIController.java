@@ -14,16 +14,17 @@ public class GUIController extends WindowAdapter implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-//        System.out.println(e.getSource());
-
         if (e.getSource() == this.gui.getBtnStart()) {
             this.gui.start();
+        }
+        else if (e.getSource() == this.gui.getBtnPause()) {
+            this.gui.pauseToggle();
         }
         else if (e.getSource() == this.gui.getBtnStop()) {
             this.gui.stop();
         }
         else if (e.getSource() == this.gui.getTimer()) {
-            this.gui.actualizeLblTime();
+            this.gui.timerHandle();
         }
     }
 

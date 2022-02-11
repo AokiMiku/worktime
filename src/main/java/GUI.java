@@ -17,6 +17,7 @@ public class GUI extends JFrame {
     private JLabel lblTime;
     private JLabel lblTimeDecimal;
     private JButton btnStart;
+    private JButton btnPause;
     private JButton btnStop;
     private LocalDateTime dtStartTime;
     private Timer timer;
@@ -25,18 +26,22 @@ public class GUI extends JFrame {
     private long hours = 0;
     private long minutes = 0;
     private long seconds = 0;
+    private boolean pause = false;
+    private LocalDateTime dtPauseStartTime;
+    private long pauseSeconds = 0;
 
-    public GUI(boolean instaStart) {
+    public GUI(boolean instantStart) {
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        this.setSize(150, 150);
+        this.setSize(240, 110);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        this.setTitle("ApS Util - Worktime");
 
         this.initComponents();
         this.addComponents();
         this.setVisible(true);
 
-        if (instaStart) {
+        if (instantStart) {
             this.start();
         }
     }
@@ -47,6 +52,7 @@ public class GUI extends JFrame {
 
         this.pnlView = new JPanel();
         this.pnlTime = new JPanel();
+        this.pnlTime.setLayout(new BoxLayout(this.pnlTime, BoxLayout.PAGE_AXIS));
         this.pnlButtons = new JPanel();
 
         this.lblTime = new JLabel(this.defaultTextForLblTime);
@@ -57,6 +63,10 @@ public class GUI extends JFrame {
         this.btnStart.setSize(50, 25);
         this.btnStart.addActionListener(this.controller);
 
+        this.btnPause = new JButton("Pause");
+        this.btnPause.setSize(50, 25);
+        this.btnPause.addActionListener(this.controller);
+
         this.btnStop = new JButton("Stop");
         this.btnStop.setSize(50, 25);
         this.btnStop.addActionListener(this.controller);
@@ -66,11 +76,12 @@ public class GUI extends JFrame {
 
     private void addComponents() {
         this.pnlTime.add(this.lblTime);
+        this.pnlTime.add(this.lblTimeDecimal);
 
         this.pnlView.add(this.pnlTime);
-        this.pnlView.add(this.lblTimeDecimal);
 
         this.pnlButtons.add(this.btnStart);
+        this.pnlButtons.add(this.btnPause);
         this.pnlButtons.add(this.btnStop);
 
         this.pnlView.add(this.pnlButtons);
@@ -87,8 +98,25 @@ public class GUI extends JFrame {
         this.timer.start();
     }
 
+    public void pauseToggle() {
+        if (!this.pause) {
+            this.dtPauseStartTime = LocalDateTime.now();
+            this.pause = true;
+        }
+        else {
+            this.pauseSeconds += Duration.between(this.dtPauseStartTime, LocalDateTime.now()).getSeconds();
+            this.pause = false;
+        }
+    }
+
     public void stop() {
         this.timer.stop();
+    }
+
+    public void timerHandle() {
+        if (!this.pause) {
+            this.actualizeLblTime();
+        }
     }
 
     public void actualizeLblTime() {
@@ -98,7 +126,7 @@ public class GUI extends JFrame {
 
     private String convertSecondsToStringTime(long seconds) {
         String result = "";
-        long remainingSeconds = seconds;
+        long remainingSeconds = seconds - this.pauseSeconds;
         long minutes = 0;
         long hours = 0;
 
@@ -106,16 +134,6 @@ public class GUI extends JFrame {
         this.seconds = remainingSeconds -= minutes * 60;
         this.hours = hours = minutes / 60;
         this.minutes = minutes -= hours * 60;
-
-//        while (remainingSeconds >= 60) {
-//            minutes++;
-//            remainingSeconds -= 60;
-//        }
-//
-//        while (minutes >= 60) {
-//            hours++;
-//            minutes -= 60;
-//        }
 
         result = String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds);
 
