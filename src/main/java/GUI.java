@@ -23,8 +23,6 @@ public class GUI extends JFrame {
     private Timer timer;
     private final String defaultTextForLblTime = "00:00:00";
     private final String defaultTextForLblTimeDecimal = "0.00000";
-//    private long hours = 0;
-//    private long minutes = 0;
     private long seconds = 0;
     private boolean pause = false;
     private LocalDateTime dtPauseStartTime;
@@ -137,7 +135,7 @@ public class GUI extends JFrame {
         return String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds);
     }
 
-    private double calculateHoursAndMinutesToHoursDecimal() {
+    public double calculateHoursAndMinutesToHoursDecimal() {
         return this.seconds / 3600f;
     }
 }
