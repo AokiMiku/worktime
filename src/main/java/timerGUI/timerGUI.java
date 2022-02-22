@@ -2,9 +2,11 @@ package timerGUI;
 
 import javax.swing.*;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import datawrapGUI.wrapGUI;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +19,14 @@ public class timerGUI extends JFrame {
         for (String arg : args) {
             if (arg.equals("--start") || arg.equals("-s")) {
                 start = true;
-                break;
+            }
+            else if (arg.equals("--wrap") || arg.equals("-w")) {
+                try {
+                    new wrapGUI();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
             }
         }
         new timerGUI(start);
