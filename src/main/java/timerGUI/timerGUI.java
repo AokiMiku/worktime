@@ -1,6 +1,7 @@
+package timerGUI;
+
 import javax.swing.*;
 
-import java.awt.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -9,9 +10,20 @@ import lombok.Setter;
 
 
 @Getter @Setter
-public class GUI extends JFrame {
+public class timerGUI extends JFrame {
+    public static void main (String[] args) {
 
-    private GUIController controller;
+        boolean start = false;
+        for (String arg : args) {
+            if (arg.equals("--start") || arg.equals("-s")) {
+                start = true;
+                break;
+            }
+        }
+        new timerGUI(start);
+    }
+
+    private timerGUIController controller;
     private JPanel pnlView;
     private JPanel pnlTime;
     private JPanel pnlButtons;
@@ -29,7 +41,7 @@ public class GUI extends JFrame {
     private LocalDateTime dtPauseStartTime;
     private long pauseSeconds = 0;
 
-    public GUI(boolean instantStart) {
+    public timerGUI(boolean instantStart) {
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setSize(240, 110);
@@ -46,8 +58,8 @@ public class GUI extends JFrame {
         }
     }
 
-    private void initComponents() {
-        this.controller = new GUIController(this);
+    public void initComponents() {
+        this.controller = new timerGUIController(this);
         this.addWindowListener(this.controller);
 
         this.pnlView = new JPanel();
@@ -79,7 +91,7 @@ public class GUI extends JFrame {
         this.timer = new Timer(100, this.controller);
     }
 
-    private void addComponents() {
+    public void addComponents() {
         this.pnlTime.add(this.lblTime);
         this.pnlTime.add(this.lblTimeDecimal);
 
