@@ -1,5 +1,6 @@
 import javax.swing.*;
 
+import java.awt.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -29,6 +30,7 @@ public class GUI extends JFrame {
     private long pauseSeconds = 0;
 
     public GUI(boolean instantStart) {
+
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setSize(240, 110);
         this.setLocationRelativeTo(null);
@@ -49,9 +51,13 @@ public class GUI extends JFrame {
         this.addWindowListener(this.controller);
 
         this.pnlView = new JPanel();
+//        this.pnlView.setLayout(new BoxLayout(this.pnlView, BoxLayout.Y_AXIS));
+
         this.pnlTime = new JPanel();
-        this.pnlTime.setLayout(new BoxLayout(this.pnlTime, BoxLayout.PAGE_AXIS));
+        this.pnlTime.setLayout(new BoxLayout(this.pnlTime, BoxLayout.Y_AXIS));
+
         this.pnlButtons = new JPanel();
+//        this.pnlButtons.setLayout(new BoxLayout(this.pnlButtons, BoxLayout.X_AXIS));
 
         this.lblTime = new JLabel(this.defaultTextForLblTime);
 
@@ -59,6 +65,7 @@ public class GUI extends JFrame {
 
         this.btnStart = new JButton("Start");
         this.btnStart.setSize(50, 25);
+//        this.btnStart.setMargin(new Insets(2, 2, 2, 2));
         this.btnStart.addActionListener(this.controller);
 
         this.btnPause = new JButton("Pause");
