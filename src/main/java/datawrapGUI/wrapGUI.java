@@ -2,6 +2,7 @@ package datawrapGUI;
 
 import javax.swing.*;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -11,17 +12,12 @@ import data.day;
 
 @Getter
 public class wrapGUI extends JFrame {
-    public static void main (String[] args) {
-
-        try {
-            new wrapGUI();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private wrapGUIController controller;
     private ArrayList<day> days;
+
+    private JTable dataTable;
+    private ScrollPane dataScroll;
 
     public wrapGUI() throws IOException {
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -41,12 +37,20 @@ public class wrapGUI extends JFrame {
         this.addWindowListener(this.controller);
 
         this.days = new ArrayList<>();
+
+        this.dataScroll = new ScrollPane();
     }
 
     private void addComponents() throws IOException {
 
+
         this.days = data.day.extractDataFromString(utils.fileOps.readDataFromDataFile());
         day.sumAllDataSameDays(this.days);
+        this.dataTable = new JTable(this.controller.fillData(this.days), new String[] {"Date", "Worktimes", "Daily OT", "Weekly OT"} );
+        this.dataTable.setFillsViewportHeight(true);
+        this.dataScroll.add(this.dataTable);
+
+        this.setContentPane(this.dataScroll);
 
     }
 }

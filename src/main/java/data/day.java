@@ -42,6 +42,7 @@ public class day {
             if (days.get(i).getDate().equals(days.get(i + 1).getDate())) {
                 days.get(i).setHoursDecimal(days.get(i).getHoursDecimal() + days.get(i + 1).getHoursDecimal());
                 days.remove(i + 1);
+                i--;
             }
         }
     }
