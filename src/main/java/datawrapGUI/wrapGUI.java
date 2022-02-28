@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import lombok.Getter;
 import data.day;
+import utils.fileOps;
 
 
 @Getter
@@ -43,8 +44,7 @@ public class wrapGUI extends JFrame {
 
     private void addComponents() throws IOException {
 
-
-        this.days = data.day.extractDataFromString(utils.fileOps.readDataFromDataFile());
+        this.days = data.day.extractDataFromString(utils.fileOps.readDataFromDataFile(fileOps.dataFilePath));
         day.sumAllDataSameDays(this.days);
         this.dataTable = new JTable(this.controller.fillData(this.days), new String[] {"Date", "Worktimes", "Daily OT", "Weekly OT"} );
         this.dataTable.setFillsViewportHeight(true);

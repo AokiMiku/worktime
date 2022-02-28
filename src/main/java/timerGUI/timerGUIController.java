@@ -6,6 +6,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 
+import utils.fileOps;
+
 
 public class timerGUIController extends WindowAdapter implements ActionListener {
 
@@ -26,7 +28,7 @@ public class timerGUIController extends WindowAdapter implements ActionListener 
         else if (e.getSource() == this.timerGui.getBtnStop()) {
             this.timerGui.stop();
             try {
-                utils.fileOps.writeDataToDataFile(this.timerGui.calculateHoursAndMinutesToHoursDecimal() + "");
+                utils.fileOps.writeDataToDataFile(fileOps.dataFilePath, this.timerGui.calculateHoursAndMinutesToHoursDecimal() + "");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
