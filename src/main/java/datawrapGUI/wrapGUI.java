@@ -44,7 +44,7 @@ public class wrapGUI extends JFrame {
 
     private void addComponents() throws IOException {
 
-        this.days = data.day.extractDataFromString(utils.fileOps.readDataFromDataFile(fileOps.dataFilePath));
+        this.days = data.day.extractDataFromString(utils.fileOps.readAllDataFromDataFile(fileOps.dataFilePath));
         day.sumAllDataSameDays(this.days);
         this.dataTable = new JTable(this.controller.fillData(this.days), new String[] {"Date", "Worktimes", "Daily OT", "Weekly OT"} );
         this.dataTable.setFillsViewportHeight(true);

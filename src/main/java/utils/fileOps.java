@@ -37,7 +37,7 @@ public class fileOps {
         pw.close();
     }
 
-    public static String readDataFromDataFile(String path) throws IOException {
+    public static String readAllDataFromDataFile(String path) throws IOException {
 
         StringBuilder resultStringBuilder = new StringBuilder();
 
@@ -67,7 +67,7 @@ public class fileOps {
         String filepath = getDataFilePathForMonth(month);
         if (new File(filepath).exists()) {
             try {
-                String data = readDataFromDataFile(filepath);
+                String data = readAllDataFromDataFile(filepath);
                 while (data.contains(",")) {
                     if (data.startsWith(month.toString())) {
                         data = data.substring(data.indexOf(",") + 1, data.indexOf("\n"));
