@@ -32,6 +32,10 @@ public class wrapGUIController extends WindowAdapter implements ActionListener {
 
     public Object[][] fillData(ArrayList<day> days) {
 
+        if (days.size() == 0) {
+            return null;
+        }
+
         int dataSizeOffset = 0;
         LocalDate dayOne = days.get(0).getDate();
 
@@ -44,7 +48,7 @@ public class wrapGUIController extends WindowAdapter implements ActionListener {
 
         for (int i = 0; i < dataSizeOffset; i++) {
             writeDataRow(data, i, dayOne,
-                            String.format("%.5f", utils.fileOps.getWorkhoursForSpecificDay(dayOne)),
+                            String.format("%.5f", utils.fileOps.getWorkhoursForSpecificDay(dayOne).getHoursDecimal()),
                             String.format("%.5f", this.calculateDailyOvertime(utils.fileOps.getWorkhoursForSpecificDay(dayOne))));
             dayOne = dayOne.plusDays(1);
         }
@@ -53,7 +57,7 @@ public class wrapGUIController extends WindowAdapter implements ActionListener {
 
             writeDataRow(data, k, days.get(i).getDate(),
                          String.format("%.5f", days.get(i).getHoursDecimal()),
-                         String.format("%.5f", this.calculateDailyOvertime(days.get(i).getHoursDecimal())));
+                         String.format("%.5f", this.calculateDailyOvertime(days.get(i))));
             if (days.get(i).getDate().getDayOfWeek().equals(DayOfWeek.FRIDAY)) {
                 double sum = 0;
                 for (int j = 0; j < 5; j ++) {
@@ -68,7 +72,7 @@ public class wrapGUIController extends WindowAdapter implements ActionListener {
 
         double sum = 0;
         for (data.day day : days) {
-            sum += this.calculateDailyOvertime(day.getHoursDecimal());
+            sum += this.calculateDailyOvertime(day);
         }
         data[data.length - 1][0] = "Gesamt";
         data[data.length - 1][1] = "-------";
@@ -83,7 +87,13 @@ public class wrapGUIController extends WindowAdapter implements ActionListener {
         System.arraycopy(columnData, 0, data[rowIdx], 0, columnData.length);
     }
 
-    public double calculateDailyOvertime(double workedHours) {
-        return workedHours - 8;
+    public double calculateDailyOvertime(day dayToCalculate) {
+        if (dayToCalculate.getHoursDecimal() > 0 || dayToCalculate.isWorkDay()) {
+            return dayToCalculate.getHoursDecimal() - 8;
+        }
+        else {
+            return 0.0;
+        }
+
     }
 }

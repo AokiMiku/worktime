@@ -6,21 +6,25 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 
 @Getter
 @Setter
 public class day {
+
     private LocalDate date;
     private double hoursDecimal;
+    private boolean isWorkDay;
 
-    public day (LocalDate date, double hoursDecimal) {
+    public day (LocalDate date, double hoursDecimal, boolean isWorkDay) {
         this.date = date;
         this.hoursDecimal = hoursDecimal;
+        this.isWorkDay = isWorkDay;
     }
 
-    public day (LocalDate date, String hoursDecimal) {
-        this(date, Double.parseDouble(hoursDecimal));
+    public day (LocalDate date, String hoursDecimal, boolean isWorkDay) {
+        this(date, Double.parseDouble(hoursDecimal), isWorkDay);
     }
 
     @Override
@@ -29,7 +33,13 @@ public class day {
         return "day{" +
             "date=" + date +
             ", hoursDecimal=" + hoursDecimal +
+            ", isWorkDay=" + this.isWorkDay +
             '}';
+    }
+
+    public static day toDay(String data) {
+        String[] dayString = data.split(",");
+        return new day(LocalDate.parse(dayString[0]), (dayString[1]), Boolean.parseBoolean(dayString[2]));
     }
 
     public static void sumAllDataSameDays (ArrayList<day> days) {
@@ -51,10 +61,14 @@ public class day {
 
         ArrayList<day> days = new ArrayList<>();
         while (data.contains(",")) {
-            days.add(new day(LocalDate.parse(data.substring(0, data.indexOf(','))), data.substring(data.indexOf(',') + 1, data.indexOf("\n"))));
+            days.add(toDay(data.substring(0, data.indexOf("\n"))));
 
             data = data.substring(data.indexOf("\n") + 1);
         }
         return days;
+    }
+
+    public static day addWorkHoursForSameDay (@NotNull day left, @NotNull day right) {
+        return new day(left.getDate(), left.getHoursDecimal() + right.getHoursDecimal(), left.isWorkDay() && right.isWorkDay());
     }
 }
