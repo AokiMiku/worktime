@@ -9,3 +9,5 @@
 
 # own
 /target/
+/.idea/aws.xml
+/data/*
