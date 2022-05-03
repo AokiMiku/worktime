@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,14 +16,21 @@ import lombok.Getter;
 public class wrapGUIController extends WindowAdapter implements ActionListener {
 
     private final wrapGUI wrapGUI;
+    public static final String TEXT_ALL_CURRENT_YEAR = "Alle aktuelles Jahr";
 
     public wrapGUIController (wrapGUI wrapGUI) {
         this.wrapGUI = wrapGUI;
     }
 
     @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == this.wrapGUI.getSelectMonths()) {
+            try {
+                this.wrapGUI.buildDataTable();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -34,6 +42,10 @@ public class wrapGUIController extends WindowAdapter implements ActionListener {
 
         if (days.size() == 0) {
             return null;
+        }
+
+        if (this.wrapGUI.getSelectMonths().getSelectedItem().equals(TEXT_ALL_CURRENT_YEAR)) {
+
         }
 
         int dataSizeOffset = 0;

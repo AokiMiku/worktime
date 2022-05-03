@@ -13,24 +13,6 @@ import lombok.Setter;
 
 @Getter @Setter
 public class timerGUI extends JFrame {
-    public static void main (String[] args) {
-
-        boolean start = false;
-        for (String arg : args) {
-            if (arg.equals("--start") || arg.equals("-s")) {
-                start = true;
-            }
-            else if (arg.equals("--wrap") || arg.equals("-w")) {
-                try {
-                    new wrapGUI();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return;
-            }
-        }
-        new timerGUI(start);
-    }
 
     private timerGUIController controller;
     private JPanel pnlView;

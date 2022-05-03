@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.Month;
 
 import data.day;
 import org.apache.commons.io.FileUtils;
@@ -29,7 +30,15 @@ public class fileOps {
         }
     }
 
-    static String getDataFilePathForMonth(LocalDate month) {
+    public static String getDataFilePathForMonth(int month) {
+        return getDataFilePathForMonth(LocalDate.of(LocalDate.now().getYear(), Month.of(month), 1));
+    }
+
+    public static String getDataFilePathForMonth(String month) {
+        return getDataFilePathForMonth(LocalDate.of(LocalDate.now().getYear(), Month.valueOf(month), 1));
+    }
+
+    public static String getDataFilePathForMonth(LocalDate month) {
         return String.format("data/%d%02d_%s.csv", month.getYear(), month.getMonthValue(), month.getMonth());
     }
 
@@ -41,6 +50,11 @@ public class fileOps {
     }
 
     public static String readAllDataFromDataFile(String path) throws IOException {
+
+        File f = new File(path);
+        if (!f.exists()) {
+            return "";
+        }
 
         StringBuilder resultStringBuilder = new StringBuilder();
 
