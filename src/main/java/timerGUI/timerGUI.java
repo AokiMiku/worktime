@@ -133,6 +133,15 @@ public class timerGUI extends JFrame {
     }
 
     private String convertSecondsToStringTime(long seconds) {
+
+        if (this.pauseSeconds < 45 * 60) {
+            if (seconds / 3600f > 9) {
+                seconds -= (45 * 60 - this.pauseSeconds);
+            } else if (seconds / 3600f > 6) {
+                seconds -= (30 * 60 - this.pauseSeconds);
+            }
+        }
+
         long remainingSeconds = this.seconds = seconds - this.pauseSeconds;
         long minutes;
         long hours;
@@ -141,6 +150,7 @@ public class timerGUI extends JFrame {
         remainingSeconds -= minutes * 60;
         hours = minutes / 60;
         minutes -= hours * 60;
+
 
         return String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds);
     }
