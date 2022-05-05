@@ -31,6 +31,8 @@ public class timerGUI extends JFrame {
     private boolean pause = false;
     private LocalDateTime dtPauseStartTime;
     private long pauseSeconds = 0;
+    private boolean pause30Min = false;
+    private boolean pause45Min = false;
 
     public timerGUI(boolean instantStart) {
 
@@ -134,13 +136,15 @@ public class timerGUI extends JFrame {
 
     private String convertSecondsToStringTime(long seconds) {
 
-        if (this.pauseSeconds < 45 * 60) {
-            if (seconds / 3600f > 9) {
-                seconds -= (45 * 60 - this.pauseSeconds);
-            } else if (seconds / 3600f > 6) {
-                seconds -= (30 * 60 - this.pauseSeconds);
-            }
+
+        if (seconds / 3600f > 9 && !this.pause45Min) {
+            this.pauseSeconds = Math.max(45 * 60, this.pauseSeconds);
+            this.pause45Min = true;
+        } else if (seconds / 3600f > 6 && !this.pause30Min) {
+            this.pauseSeconds = Math.max(30 * 60, this.pauseSeconds);
+            this.pause30Min = true;
         }
+
 
         long remainingSeconds = this.seconds = seconds - this.pauseSeconds;
         long minutes;
