@@ -69,7 +69,7 @@ public class wrapGUI extends JFrame {
             this.selectMonths.setSelectedIndex(this.startMonth);
         }
 
-        this.buildDataTable();
+//        this.buildDataTable();
 
         this.dataTable.setFillsViewportHeight(true);
         this.dataScroll.add(this.dataTable);
@@ -83,18 +83,19 @@ public class wrapGUI extends JFrame {
 
     public void buildDataTable() throws IOException {
         if (this.selectMonths.getSelectedIndex() != 0) {
-            this.days = data.day.extractDataFromString(utils.fileOps.readAllDataFromDataFile(fileOps.getDataFilePathForMonth(this.selectMonths.getSelectedIndex())));
+            this.days = day.extractDataFromString(fileOps.readAllDataFromDataFile(fileOps.getDataFilePathForMonth(this.selectMonths.getSelectedIndex())));
         }
         else {
             for (int i = 1; i <= 12; i++) {
-                this.days.addAll(data.day.extractDataFromString(utils.fileOps.readAllDataFromDataFile(fileOps.getDataFilePathForMonth(i))));
+                this.days.addAll(day.extractDataFromString(fileOps.readAllDataFromDataFile(fileOps.getDataFilePathForMonth(i))));
             }
         }
 
         day.sumAllDataSameDays(this.days);
-        if (this.dataTable != null) {
-            ((DefaultTableModel)this.dataTable.getModel()).setRowCount(0);
-        }
+//        if (this.dataTable != null) {
+//            ((DefaultTableModel)this.dataTable.getModel()).setRowCount(0);
+////            this.dataTable.getModel().setRowCount(0);
+//        }
         if (this.days.size() > 0) {
 
             String[] columnNames = {"Date", "Worktimes", "Daily OT", "Weekly OT"};
