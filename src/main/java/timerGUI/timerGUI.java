@@ -30,6 +30,7 @@ public class timerGUI extends JFrame {
     private final String defaultTextForLblTime = "00:00:00";
     private final String defaultTextForLblTimeDecimal = "0.00000";
     private long seconds = 0;
+    private long todayAlreadyWorkedSeconds;
     private boolean pause = false;
     private LocalDateTime dtPauseStartTime;
     private long pauseSeconds = 0;
@@ -43,6 +44,8 @@ public class timerGUI extends JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("ApS Util - Worktime");
+
+        this.todayAlreadyWorkedSeconds = fileOps.getWorkhoursForSpecificDay(LocalDate.now()).getSeconds();
 
         this.initComponents();
         this.addComponents();
@@ -109,7 +112,7 @@ public class timerGUI extends JFrame {
             this.lblTime.setText(this.defaultTextForLblTime);
             this.lblTimeDecimal.setText(this.defaultTextForLblTimeDecimal);
         }
-        this.dtStartTime = LocalDateTime.now().minusSeconds(fileOps.getWorkhoursForSpecificDay(LocalDate.now()).getSeconds());
+        this.dtStartTime = LocalDateTime.now().minusSeconds(this.todayAlreadyWorkedSeconds);
         this.timer.start();
     }
 
