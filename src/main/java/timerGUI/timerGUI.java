@@ -2,13 +2,14 @@ package timerGUI;
 
 import javax.swing.*;
 
-import java.io.IOException;
+
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import datawrapGUI.wrapGUI;
 import lombok.Getter;
 import lombok.Setter;
+import utils.fileOps;
 
 
 @Getter @Setter
@@ -20,6 +21,7 @@ public class timerGUI extends JFrame {
     private JPanel pnlButtons;
     private JLabel lblTime;
     private JLabel lblTimeDecimal;
+    private JLabel lblPauseTime;
     private JButton btnStart;
     private JButton btnPause;
     private JButton btnStop;
@@ -37,7 +39,7 @@ public class timerGUI extends JFrame {
     public timerGUI(boolean instantStart) {
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        this.setSize(240, 110);
+        this.setSize(240, 140);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("ApS Util - Worktime");
@@ -68,6 +70,8 @@ public class timerGUI extends JFrame {
 
         this.lblTimeDecimal = new JLabel(this.defaultTextForLblTimeDecimal);
 
+        this.lblPauseTime = new JLabel(this.defaultTextForLblTime);
+
         this.btnStart = new JButton("Start");
         this.btnStart.setSize(50, 25);
 //        this.btnStart.setMargin(new Insets(2, 2, 2, 2));
@@ -87,6 +91,7 @@ public class timerGUI extends JFrame {
     public void addComponents() {
         this.pnlTime.add(this.lblTime);
         this.pnlTime.add(this.lblTimeDecimal);
+        this.pnlTime.add(this.lblPauseTime);
 
         this.pnlView.add(this.pnlTime);
 
@@ -124,29 +129,26 @@ public class timerGUI extends JFrame {
     }
 
     public void timerHandle() {
-        if (!this.pause) {
+//        if (!this.pause) {
             this.actualizeLblTime();
-        }
+//        }
     }
 
     public void actualizeLblTime() {
-        this.lblTime.setText(this.convertSecondsToStringTime(Duration.between(this.dtStartTime, LocalDateTime.now()).getSeconds()));
+        calcAutoPause();
+        if (this.pause) {
+            this.lblPauseTime.setText(convertSecondsToStringTime(Duration.between(this.dtPauseStartTime, LocalDateTime.now()).getSeconds()));
+        }
+        else {
+            this.lblTime.setText(this.convertSecondsToStringTime(this.seconds = Duration.between(this.dtStartTime, LocalDateTime.now()).getSeconds() - this.pauseSeconds));
+            this.lblPauseTime.setText(convertSecondsToStringTime(this.pauseSeconds));
+        }
         this.lblTimeDecimal.setText(String.format("%.5f", this.calculateHoursAndMinutesToHoursDecimal()));
     }
 
     private String convertSecondsToStringTime(long seconds) {
 
-
-        if (seconds / 3600f > 9 && !this.pause45Min) {
-            this.pauseSeconds = Math.max(45 * 60, this.pauseSeconds);
-            this.pause45Min = true;
-        } else if (seconds / 3600f > 6 && !this.pause30Min) {
-            this.pauseSeconds = Math.max(30 * 60, this.pauseSeconds);
-            this.pause30Min = true;
-        }
-
-
-        long remainingSeconds = this.seconds = seconds - this.pauseSeconds;
+        long remainingSeconds = seconds;
         long minutes;
         long hours;
 
@@ -157,6 +159,17 @@ public class timerGUI extends JFrame {
 
 
         return String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds);
+    }
+
+    private void calcAutoPause() {
+
+        if (seconds / 3600f > 9 && !this.pause45Min) {
+            this.pauseSeconds = Math.max(45 * 60, this.pauseSeconds);
+            this.pause45Min = true;
+        } else if (seconds / 3600f > 6 && !this.pause30Min) {
+            this.pauseSeconds = Math.max(30 * 60, this.pauseSeconds);
+            this.pause30Min = true;
+        }
     }
 
     public double calculateHoursAndMinutesToHoursDecimal() {
