@@ -1,9 +1,12 @@
+package de.apsprograms;
+
 import java.io.IOException;
 
 import datawrapGUI.wrapGUI;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import timerGUI.timerGUI;
 
-
+@SpringBootApplication
 public class app {
     public static void main (String[] args) {
 
