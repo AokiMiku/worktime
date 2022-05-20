@@ -42,10 +42,10 @@ public class fileOps {
         return String.format("data/%d%02d_%s.csv", month.getYear(), month.getMonthValue(), month.getMonth());
     }
 
-    public static void writeDataToDataFile(String path, String text) throws IOException {
+    public static void writeDataToDataFile(String path, String hoursDecimal, String pauseSeconds) throws IOException {
 
         PrintWriter pw = new PrintWriter(new FileWriter(new File(path).getAbsolutePath(), true));
-        pw.println(String.format("%s,%s,true", LocalDate.now(), text));
+        pw.println(String.format("%s,%s,true,%s", LocalDate.now(), hoursDecimal, pauseSeconds));
         pw.close();
     }
 
@@ -111,10 +111,10 @@ public class fileOps {
             }
         }
         else {
-            return new day(specificDay, 0, false);
+            return new day(specificDay, 0, false, 0);
         }
 
-        return new day(specificDay, 0, false);
+        return new day(specificDay, 0, false, 0);
     }
 }
 

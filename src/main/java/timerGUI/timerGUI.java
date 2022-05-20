@@ -33,7 +33,7 @@ public class timerGUI extends JFrame {
     private long todayAlreadyWorkedSeconds;
     private boolean pause = false;
     private LocalDateTime dtPauseStartTime;
-    private long pauseSeconds = 0;
+    private long pauseSeconds;
     private boolean pause30Min = false;
     private boolean pause45Min = false;
 
@@ -46,6 +46,7 @@ public class timerGUI extends JFrame {
         this.setTitle("ApS Util - Worktime");
 
         this.todayAlreadyWorkedSeconds = fileOps.getWorkhoursForSpecificDay(LocalDate.now()).getSeconds();
+        this.pauseSeconds = fileOps.getWorkhoursForSpecificDay(LocalDate.now()).getPauseSeconds();
 
         this.initComponents();
         this.addComponents();

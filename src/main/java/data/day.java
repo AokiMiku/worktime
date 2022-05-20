@@ -2,7 +2,6 @@ package data;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,34 +15,37 @@ public class day {
     private LocalDate date;
     private double hoursDecimal;
     private boolean isWorkDay;
+    private long pauseSeconds;
 
     public long getSeconds() {
         return (long) (this.hoursDecimal * 3600);
     }
 
-    public day (LocalDate date, double hoursDecimal, boolean isWorkDay) {
+    public day (LocalDate date, double hoursDecimal, boolean isWorkDay, long pauseSeconds) {
         this.date = date;
         this.hoursDecimal = hoursDecimal;
         this.isWorkDay = isWorkDay;
+        this.pauseSeconds = pauseSeconds;
     }
 
-    public day (LocalDate date, String hoursDecimal, boolean isWorkDay) {
-        this(date, Double.parseDouble(hoursDecimal), isWorkDay);
+    public day (LocalDate date, String hoursDecimal, boolean isWorkDay, String pauseSeconds) {
+        this(date, Double.parseDouble(hoursDecimal), isWorkDay, Long.parseLong(pauseSeconds));
     }
 
     @Override
     public String toString () {
 
         return "day{" +
-            "date=" + date +
-            ", hoursDecimal=" + hoursDecimal +
+            "date=" + this.date +
+            ", hoursDecimal=" + this.hoursDecimal +
             ", isWorkDay=" + this.isWorkDay +
+            ", pauseDecimal=" + this.pauseSeconds +
             '}';
     }
 
     public static day toDay(String data) {
         String[] dayString = data.split(",");
-        return new day(LocalDate.parse(dayString[0]), (dayString[1]), Boolean.parseBoolean(dayString[2]));
+        return new day(LocalDate.parse(dayString[0]), (dayString[1]), Boolean.parseBoolean(dayString[2]), (dayString[3]));
     }
 
     public static void sumAllDataSameDays (ArrayList<day> days) {
@@ -73,6 +75,9 @@ public class day {
     }
 
     public static day addWorkHoursForSameDay (@NotNull day left, @NotNull day right) {
-        return new day(left.getDate(), left.getHoursDecimal() + right.getHoursDecimal(), left.isWorkDay() && right.isWorkDay());
+        return new day(left.getDate(),
+                       left.getHoursDecimal() + right.getHoursDecimal(),
+                       left.isWorkDay() && right.isWorkDay(),
+                       left.getPauseSeconds() + right.getPauseSeconds());
     }
 }

@@ -28,7 +28,9 @@ public class timerGUIController extends WindowAdapter implements ActionListener 
         else if (e.getSource() == this.timerGui.getBtnStop()) {
             this.timerGui.stop();
             try {
-                utils.fileOps.writeDataToDataFile(fileOps.dataFilePath, this.timerGui.calculateHoursAndMinutesToHoursDecimal() + "");
+                utils.fileOps.writeDataToDataFile(fileOps.dataFilePath,
+                                                  this.timerGui.calculateHoursAndMinutesToHoursDecimal() + "",
+                                                  this.timerGui.getPauseSeconds() + "");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
