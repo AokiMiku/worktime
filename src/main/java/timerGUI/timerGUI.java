@@ -109,7 +109,7 @@ public class timerGUI extends JFrame {
             this.lblTime.setText(this.defaultTextForLblTime);
             this.lblTimeDecimal.setText(this.defaultTextForLblTimeDecimal);
         }
-        this.dtStartTime = LocalDateTime.now();
+        this.dtStartTime = LocalDateTime.now().minusSeconds(fileOps.getWorkhoursForSpecificDay(LocalDate.now()).getSeconds());
         this.timer.start();
     }
 

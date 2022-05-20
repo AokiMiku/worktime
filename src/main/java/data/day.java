@@ -17,6 +17,10 @@ public class day {
     private double hoursDecimal;
     private boolean isWorkDay;
 
+    public long getSeconds() {
+        return (long) (this.hoursDecimal * 3600);
+    }
+
     public day (LocalDate date, double hoursDecimal, boolean isWorkDay) {
         this.date = date;
         this.hoursDecimal = hoursDecimal;
