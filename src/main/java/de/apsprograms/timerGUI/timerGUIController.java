@@ -1,12 +1,12 @@
-package timerGUI;
+package de.apsprograms.timerGUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
+import java.time.LocalDate;
 
-import utils.fileOps;
+import de.apsprograms.data.day;
 
 
 public class timerGUIController extends WindowAdapter implements ActionListener {
@@ -27,13 +27,13 @@ public class timerGUIController extends WindowAdapter implements ActionListener 
         }
         else if (e.getSource() == this.timerGui.getBtnStop()) {
             this.timerGui.stop();
-            try {
-                utils.fileOps.writeDataToDataFile(fileOps.dataFilePath,
-                                                  this.timerGui.calculateHoursAndMinutesToHoursDecimal() + "",
-                                                  this.timerGui.getPauseSeconds() + "");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            this.timerGui.getOps().writeData(new day(LocalDate.now(),
+                                                     this.timerGui.calculateHoursAndMinutesToHoursDecimal(),
+                                                     true,
+                                                     this.timerGui.getPauseSeconds()));
+//                utils.fileOps.writeDataToDataFile(fileOps.dataFilePath,
+//                                                  this.timerGui.calculateHoursAndMinutesToHoursDecimal() + "",
+//                                                  this.timerGui.getPauseSeconds() + "");
         }
         else if (e.getSource() == this.timerGui.getTimer()) {
             this.timerGui.timerHandle();

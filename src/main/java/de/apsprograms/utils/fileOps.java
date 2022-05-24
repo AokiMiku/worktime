@@ -1,4 +1,4 @@
-package utils;
+package de.apsprograms.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,15 +9,15 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.Month;
 
-import data.day;
+import de.apsprograms.data.day;
 import org.apache.commons.io.FileUtils;
 
-import static data.day.addWorkHoursForSameDay;
+import static de.apsprograms.data.day.addWorkHoursForSameDay;
 
 
 public class fileOps {
     public static final String dataFilePath;
-    public static final String patternFilePath = "data/worktimePattern.csv";
+    public static final String patternFilePath = "de/apsprograms/data/worktimePattern.csv";
 
     static {
         LocalDate today = LocalDate.now();
@@ -39,7 +39,7 @@ public class fileOps {
     }
 
     public static String getDataFilePathForMonth(LocalDate month) {
-        return String.format("data/%d%02d_%s.csv", month.getYear(), month.getMonthValue(), month.getMonth());
+        return String.format("de/apsprograms/data/%d%02d_%s.csv", month.getYear(), month.getMonthValue(), month.getMonth());
     }
 
     public static void writeDataToDataFile(String path, String hoursDecimal, String pauseSeconds) throws IOException {

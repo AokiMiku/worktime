@@ -1,4 +1,4 @@
-package datawrapGUI;
+package de.apsprograms.datawrapGUI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +9,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import data.day;
+import de.apsprograms.data.day;
+import de.apsprograms.utils.fileOps;
 import lombok.Getter;
 
 @Getter
@@ -44,9 +45,9 @@ public class wrapGUIController extends WindowAdapter implements ActionListener {
             return null;
         }
 
-        if (this.wrapGUI.getSelectMonths().getSelectedItem().equals(TEXT_ALL_CURRENT_YEAR)) {
-
-        }
+//        if (this.wrapGUI.getSelectMonths().getSelectedItem().equals(TEXT_ALL_CURRENT_YEAR)) {
+//
+//        }
 
         int dataSizeOffset = 0;
         LocalDate dayOne = days.get(0).getDate();
@@ -60,8 +61,8 @@ public class wrapGUIController extends WindowAdapter implements ActionListener {
 
         for (int i = 0; i < dataSizeOffset; i++) {
             writeDataRow(data, i, dayOne,
-                            String.format("%.5f", utils.fileOps.getWorkhoursForSpecificDay(dayOne).getHoursDecimal()),
-                            String.format("%.5f", this.calculateDailyOvertime(utils.fileOps.getWorkhoursForSpecificDay(dayOne))));
+                            String.format("%.5f", fileOps.getWorkhoursForSpecificDay(dayOne).getHoursDecimal()),
+                            String.format("%.5f", this.calculateDailyOvertime(fileOps.getWorkhoursForSpecificDay(dayOne))));
             dayOne = dayOne.plusDays(1);
         }
 
@@ -73,7 +74,7 @@ public class wrapGUIController extends WindowAdapter implements ActionListener {
             if (days.get(i).getDate().getDayOfWeek().equals(DayOfWeek.FRIDAY)) {
                 double sum = 0;
                 for (int j = 0; j < 5; j ++) {
-                    sum += this.calculateDailyOvertime(utils.fileOps.getWorkhoursForSpecificDay(days.get(i).getDate().minusDays(j)));
+                    sum += this.calculateDailyOvertime(fileOps.getWorkhoursForSpecificDay(days.get(i).getDate().minusDays(j)));
                 }
                 data[k][3] = String.format("%.5f", sum);
             }
@@ -83,7 +84,7 @@ public class wrapGUIController extends WindowAdapter implements ActionListener {
         }
 
         double sum = 0;
-        for (data.day day : days) {
+        for (day day : days) {
             sum += this.calculateDailyOvertime(day);
         }
         data[data.length - 1][0] = "Gesamt";

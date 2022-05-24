@@ -1,4 +1,4 @@
-package data;
+package de.apsprograms.data;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

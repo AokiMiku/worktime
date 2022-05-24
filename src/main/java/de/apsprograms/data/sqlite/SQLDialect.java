@@ -1,4 +1,4 @@
-package data.sqlite;
+package de.apsprograms.data.sqlite;
 
 import java.sql.Types;
 
@@ -56,15 +56,6 @@ public class SQLDialect extends Dialect {
 
     public String getIdentitySelectString() {
         return "select last_insert_rowid()";
-    }
-
-    public boolean supportsLimit() {
-        return true;
-    }
-
-    protected String getLimitString(String query, boolean hasOffset) {
-        return new StringBuffer(query.length() + 20).append(query).append(hasOffset ? " limit ? offset ?" : " limit ?")
-                                                    .toString();
     }
 
     public boolean supportsTemporaryTables() {

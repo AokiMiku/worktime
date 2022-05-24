@@ -1,4 +1,4 @@
-package timerGUI;
+package de.apsprograms.timerGUI;
 
 import javax.swing.*;
 
@@ -7,12 +7,18 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import de.apsprograms.data.config.worktimesConfiguration;
+import de.apsprograms.data.worktimesRepository;
+import de.apsprograms.utils.dbOps;
 import lombok.Getter;
 import lombok.Setter;
-import utils.fileOps;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 
 @Getter @Setter
+@SpringBootApplication
 public class timerGUI extends JFrame {
 
     private timerGUIController controller;
@@ -37,7 +43,11 @@ public class timerGUI extends JFrame {
     private boolean pause30Min = false;
     private boolean pause45Min = false;
 
-    public timerGUI(boolean instantStart) {
+    private final dbOps ops;
+
+    private worktimesConfiguration configuration;
+
+    public timerGUI() {
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setSize(240, 140);
@@ -45,16 +55,14 @@ public class timerGUI extends JFrame {
         this.setResizable(false);
         this.setTitle("ApS Util - Worktime");
 
-        this.todayAlreadyWorkedSeconds = fileOps.getWorkhoursForSpecificDay(LocalDate.now()).getSeconds();
-        this.pauseSeconds = fileOps.getWorkhoursForSpecificDay(LocalDate.now()).getPauseSeconds();
+        this.configuration = new worktimesConfiguration();
+        this.ops = new dbOps(configuration.repository);
+        this.todayAlreadyWorkedSeconds = ops.getSpecificDay(LocalDate.now()).getSeconds();
+        this.pauseSeconds = ops.getSpecificDay(LocalDate.now()).getPauseSeconds();
 
         this.initComponents();
         this.addComponents();
         this.setVisible(true);
-
-        if (instantStart) {
-            this.start();
-        }
     }
 
     public void initComponents() {

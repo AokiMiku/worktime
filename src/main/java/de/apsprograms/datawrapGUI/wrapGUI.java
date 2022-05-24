@@ -1,16 +1,15 @@
-package datawrapGUI;
+package de.apsprograms.datawrapGUI;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
 import java.io.IOException;
 import java.time.Month;
 import java.util.ArrayList;
 
+import de.apsprograms.data.day;
+import de.apsprograms.utils.fileOps;
 import lombok.Getter;
-import data.day;
-import utils.fileOps;
 
 
 @Getter
@@ -59,7 +58,7 @@ public class wrapGUI extends JFrame {
         this.dataScroll = new ScrollPane();
     }
 
-    private void addComponents() throws IOException {
+    private void addComponents() {
 
         this.selectMonths.addItem(wrapGUIController.TEXT_ALL_CURRENT_YEAR);
         for (int i = 1; i <= 12; i++) {
