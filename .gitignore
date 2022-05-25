@@ -9,5 +9,5 @@
 
 # own
 /target/
-/.idea/aws.xml
+/.idea/
 /data/*.csv
