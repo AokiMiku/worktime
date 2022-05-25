@@ -15,7 +15,7 @@ import lombok.Setter;
 @Table (name = "worktimes")
 @Getter
 @Setter
-public class worktimes {
+public class Worktimes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

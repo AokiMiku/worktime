@@ -6,14 +6,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 
-import de.apsprograms.data.day;
+import de.apsprograms.data.Day;
 
 
-public class timerGUIController extends WindowAdapter implements ActionListener {
+public class TimerGUIController extends WindowAdapter implements ActionListener {
 
-    private final timerGUI timerGui;
+    private final TimerGUI timerGui;
 
-    public timerGUIController(timerGUI timerGui) {
+    public TimerGUIController(TimerGUI timerGui) {
         this.timerGui = timerGui;
     }
 
@@ -27,7 +27,7 @@ public class timerGUIController extends WindowAdapter implements ActionListener 
         }
         else if (e.getSource() == this.timerGui.getBtnStop()) {
             this.timerGui.stop();
-            this.timerGui.getOps().writeData(new day(LocalDate.now(),
+            this.timerGui.getOps().writeData(new Day(LocalDate.now(),
                                                      this.timerGui.calculateHoursAndMinutesToHoursDecimal(),
                                                      true,
                                                      this.timerGui.getPauseSeconds()));

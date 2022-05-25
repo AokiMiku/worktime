@@ -7,16 +7,16 @@ import java.io.IOException;
 import java.time.Month;
 import java.util.ArrayList;
 
-import de.apsprograms.data.day;
-import de.apsprograms.utils.fileOps;
+import de.apsprograms.data.Day;
+import de.apsprograms.utils.FileOps;
 import lombok.Getter;
 
 
 @Getter
-public class wrapGUI extends JFrame {
+public class WrapGUI extends JFrame {
 
-    private wrapGUIController controller;
-    private ArrayList<day> days;
+    private WrapGUIController controller;
+    private ArrayList<Day> days;
 
     private JComboBox<String> selectMonths;
     private JPanel pnlContent;
@@ -25,7 +25,7 @@ public class wrapGUI extends JFrame {
 
     private int startMonth;
 
-    public wrapGUI(int startMonth) throws IOException {
+    public WrapGUI(int startMonth) throws IOException {
 
         this.startMonth = startMonth;
 
@@ -43,7 +43,7 @@ public class wrapGUI extends JFrame {
     private void initComponents() {
 
         this.setLayout(new FlowLayout());
-        this.controller = new wrapGUIController(this);
+        this.controller = new WrapGUIController(this);
         this.addWindowListener(this.controller);
 
         this.days = new ArrayList<>();
@@ -60,7 +60,7 @@ public class wrapGUI extends JFrame {
 
     private void addComponents() {
 
-        this.selectMonths.addItem(wrapGUIController.TEXT_ALL_CURRENT_YEAR);
+        this.selectMonths.addItem(WrapGUIController.TEXT_ALL_CURRENT_YEAR);
         for (int i = 1; i <= 12; i++) {
             this.selectMonths.addItem(Month.of(i).toString());
         }
@@ -82,15 +82,15 @@ public class wrapGUI extends JFrame {
 
     public void buildDataTable() throws IOException {
         if (this.selectMonths.getSelectedIndex() != 0) {
-            this.days = day.extractDataFromString(fileOps.readAllDataFromDataFile(fileOps.getDataFilePathForMonth(this.selectMonths.getSelectedIndex())));
+            this.days = Day.extractDataFromString(FileOps.readAllDataFromDataFile(FileOps.getDataFilePathForMonth(this.selectMonths.getSelectedIndex())));
         }
         else {
             for (int i = 1; i <= 12; i++) {
-                this.days.addAll(day.extractDataFromString(fileOps.readAllDataFromDataFile(fileOps.getDataFilePathForMonth(i))));
+                this.days.addAll(Day.extractDataFromString(FileOps.readAllDataFromDataFile(FileOps.getDataFilePathForMonth(i))));
             }
         }
 
-        day.sumAllDataSameDays(this.days);
+        Day.sumAllDataSameDays(this.days);
 //        if (this.dataTable != null) {
 //            ((DefaultTableModel)this.dataTable.getModel()).setRowCount(0);
 ////            this.dataTable.getModel().setRowCount(0);

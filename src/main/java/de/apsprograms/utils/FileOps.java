@@ -9,13 +9,13 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.Month;
 
-import de.apsprograms.data.day;
+import de.apsprograms.data.Day;
 import org.apache.commons.io.FileUtils;
 
-import static de.apsprograms.data.day.addWorkHoursForSameDay;
+import static de.apsprograms.data.Day.addWorkHoursForSameDay;
 
 
-public class fileOps {
+public class FileOps {
     public static final String dataFilePath;
     public static final String patternFilePath = "de/apsprograms/data/worktimePattern.csv";
 
@@ -79,7 +79,7 @@ public class fileOps {
         FileUtils.copyFile(new File(patternFilePath), data);
     }
 
-    public static day getWorkhoursForSpecificDay(LocalDate specificDay) {
+    public static Day getWorkhoursForSpecificDay(LocalDate specificDay) {
 
         String filepath = getDataFilePathForMonth(specificDay);
         if (new File(filepath).exists()) {
@@ -94,13 +94,13 @@ public class fileOps {
                             }
                         }
                         if (i == idx) {
-                            return day.toDay(data[i]);
+                            return Day.toDay(data[i]);
                         }
                         else {
-                            day allWorkHours = day.toDay(data[i]);
+                            Day allWorkHours = Day.toDay(data[i]);
                             allWorkHours.setHoursDecimal(0);
                             while (i != idx) {
-                                allWorkHours = addWorkHoursForSameDay(allWorkHours, day.toDay(data[--idx]));
+                                allWorkHours = addWorkHoursForSameDay(allWorkHours, Day.toDay(data[--idx]));
                             }
                             return allWorkHours;
                         }
@@ -111,10 +111,10 @@ public class fileOps {
             }
         }
         else {
-            return new day(specificDay, 0, false, 0);
+            return new Day(specificDay, 0, false, 0);
         }
 
-        return new day(specificDay, 0, false, 0);
+        return new Day(specificDay, 0, false, 0);
     }
 }
 

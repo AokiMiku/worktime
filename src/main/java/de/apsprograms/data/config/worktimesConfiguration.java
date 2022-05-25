@@ -1,15 +1,15 @@
 package de.apsprograms.data.config;
 
-import de.apsprograms.data.worktimesRepository;
+import de.apsprograms.data.WorktimesRepository;
 import org.springframework.context.annotation.Bean;
 
 
 public class worktimesConfiguration {
 
-    public worktimesRepository repository;
+    public WorktimesRepository repository;
 
     @Bean
-    public void Configure(worktimesRepository repository) {
+    public void Configure(WorktimesRepository repository) {
         this.repository = repository;
     }
 }

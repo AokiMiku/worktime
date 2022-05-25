@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Setter
-public class day {
+public class Day {
 
     private LocalDate date;
     private double hoursDecimal;
@@ -21,14 +21,14 @@ public class day {
         return (long) (this.hoursDecimal * 3600);
     }
 
-    public day (LocalDate date, double hoursDecimal, boolean isWorkDay, long pauseSeconds) {
+    public Day(LocalDate date, double hoursDecimal, boolean isWorkDay, long pauseSeconds) {
         this.date = date;
         this.hoursDecimal = hoursDecimal;
         this.isWorkDay = isWorkDay;
         this.pauseSeconds = pauseSeconds;
     }
 
-    public day (LocalDate date, String hoursDecimal, boolean isWorkDay, String pauseSeconds) {
+    public Day(LocalDate date, String hoursDecimal, boolean isWorkDay, String pauseSeconds) {
         this(date, Double.parseDouble(hoursDecimal), isWorkDay, Long.parseLong(pauseSeconds));
     }
 
@@ -43,12 +43,12 @@ public class day {
             '}';
     }
 
-    public static day toDay(String data) {
+    public static Day toDay(String data) {
         String[] dayString = data.split(",");
-        return new day(LocalDate.parse(dayString[0]), (dayString[1]), Boolean.parseBoolean(dayString[2]), (dayString[3]));
+        return new Day(LocalDate.parse(dayString[0]), (dayString[1]), Boolean.parseBoolean(dayString[2]), (dayString[3]));
     }
 
-    public static void sumAllDataSameDays (ArrayList<day> days) {
+    public static void sumAllDataSameDays (ArrayList<Day> days) {
 
         for (int i = 0; i < days.size(); i++) {
             if (days.size() == i + 1) {
@@ -63,9 +63,9 @@ public class day {
         }
     }
 
-    public static ArrayList<day> extractDataFromString (String data) {
+    public static ArrayList<Day> extractDataFromString (String data) {
 
-        ArrayList<day> days = new ArrayList<>();
+        ArrayList<Day> days = new ArrayList<>();
         while (data.contains(",")) {
             days.add(toDay(data.substring(0, data.indexOf("\n"))));
 
@@ -74,8 +74,8 @@ public class day {
         return days;
     }
 
-    public static day addWorkHoursForSameDay (@NotNull day left, @NotNull day right) {
-        return new day(left.getDate(),
+    public static Day addWorkHoursForSameDay (@NotNull Day left, @NotNull Day right) {
+        return new Day(left.getDate(),
                        left.getHoursDecimal() + right.getHoursDecimal(),
                        left.isWorkDay() && right.isWorkDay(),
                        left.getPauseSeconds() + right.getPauseSeconds());

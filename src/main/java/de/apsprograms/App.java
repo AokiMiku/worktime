@@ -1,23 +1,18 @@
 package de.apsprograms;
 
-import java.io.IOException;
-
-import de.apsprograms.data.worktimesRepository;
-import de.apsprograms.datawrapGUI.wrapGUI;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import de.apsprograms.timerGUI.timerGUI;
+import de.apsprograms.timerGUI.TimerGUI;
 
 
 @SpringBootApplication
 @EnableJpaRepositories("de.apsprograms.data")
 @EnableTransactionManagement
 @EntityScan("de.apsprograms.data")
-public class app {
+public class App {
 
     private static boolean start = false;
     private static boolean useWrapper = false;
@@ -36,8 +31,8 @@ public class app {
                 }
             }
         }
-        app.start = start;
-        SpringApplication.run(timerGUI.class);
+        App.start = start;
+        SpringApplication.run(TimerGUI.class);
 //        SpringApplication.run(app.class);
     }
 
