@@ -122,10 +122,10 @@ public class WorktimesController extends WindowAdapter implements ActionListener
 
     private void calcAutoPause(long seconds) {
 
-        if (seconds / 3600f > 9 && !this.pause45Min) {
+        if (seconds / 3600f >= 9 && !this.pause45Min) {
             this.getWtVO().setPause(Math.max(45 * 60, this.getWtVO().getPause()));
             this.pause45Min = true;
-        } else if (seconds / 3600f > 6 && !this.pause30Min) {
+        } else if (seconds / 3600f >= 6 && !this.pause30Min) {
             this.getWtVO().setPause(Math.max(30 * 60, this.getWtVO().getPause()));
             this.pause30Min = true;
         }
