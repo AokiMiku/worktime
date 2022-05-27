@@ -62,11 +62,17 @@ public class WorktimesController extends WindowAdapter implements ActionListener
         }
     }
 
+    @Override
+    public void windowClosing(WindowEvent e) {
+        this.stop();
+        System.exit(0);
+    }
+
     private void saveCurrentWorktime() {
 
         this.service.writeData(new WorktimesVO(
             LocalDate.now().toString(),
-            this.calculateHoursAndMinutesToHoursDecimal(this.getWtVO().getSeconds()),
+            this.calculateSecondsToHoursDecimal(this.getWtVO().getSeconds()),
             true,
             this.getWtVO().getPause()
             ));
@@ -95,31 +101,25 @@ public class WorktimesController extends WindowAdapter implements ActionListener
         }
     }
 
-    public void stop() {
-        this.timer.stop();
-    }
+    public void stop() { this.timer.stop(); }
 
-    public double calculateHoursAndMinutesToHoursDecimal(long seconds) {
-        return seconds / 3600f;
-    }
+    public double calculateSecondsToHoursDecimal(long seconds) { return seconds / 3600f; }
 
     public void timerHandle() {
-        this.GUI.actualizeLblTime();
-        if (this.wtVO.getSeconds() % minutesToSeconds(SAVE_TO_DB_EVERY_X_MINUTES) == 0) {
-            this.saveCurrentWorktime();
+        if (this.pause) {
+            this.getWtVO().setPause(Duration.between(this.dtPauseStartTime, LocalDateTime.now()).getSeconds());
+        } else {
+            this.getWtVO().setWorktime(this.calculateSecondsToHoursDecimal(Duration.between(this.dtStartTime, LocalDateTime.now()).getSeconds()));
+
         }
+
+        this.GUI.actualizeLblTime();
+//        if (this.wtVO.getSeconds() % minutesToSeconds(SAVE_TO_DB_EVERY_X_MINUTES) == 0) {
+//            this.saveCurrentWorktime();
+//        }
     }
 
-    private int minutesToSeconds(int minutes) {
-
-        return minutes * 60;
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-        this.stop();
-        System.exit(0);
-    }
+    private int minutesToSeconds(int minutes) { return minutes * 60; }
 
     public String convertSecondsToStringTime(long seconds) {
 

@@ -1,9 +1,7 @@
 package de.aps_programs.views;
 
 import javax.swing.*;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import de.aps_programs.controllers.WorktimesController;
 import de.aps_programs.data.WorktimesVO;
@@ -43,8 +41,6 @@ public class Timer extends JFrame {
 
     public void initComponents() {
 
-//        this.controller = new WorktimesController();
-//        this.controller.setGUI(this);
         this.addWindowListener(this.controller);
 
         this.controller.setWtVO(new WorktimesVO(LocalDate.now().toString(), 0, true, 0));
@@ -93,14 +89,8 @@ public class Timer extends JFrame {
 
     public void actualizeLblTime() {
 
-        if (this.controller.pause) {
-            this.lblPauseTime.setText(this.controller.convertSecondsToStringTime(Duration.between(this.controller.dtPauseStartTime, LocalDateTime.now()).getSeconds()));
-        }
-        else {
-            this.controller.getWtVO().setWorktime(Duration.between(this.controller.dtStartTime, LocalDateTime.now()).getSeconds());
-            this.lblTime.setText(this.controller.convertSecondsToStringTime(this.controller.getWtVO().getSeconds()));
-            this.lblPauseTime.setText(this.controller.convertSecondsToStringTime(this.controller.getWtVO().getPause()));
-        }
-        this.lblTimeDecimal.setText(String.format("%.5f", this.controller.calculateHoursAndMinutesToHoursDecimal(this.controller.getWtVO().getSeconds())));
+        this.lblTime.setText(this.controller.convertSecondsToStringTime(this.controller.getWtVO().getSeconds()));
+        this.lblPauseTime.setText(this.controller.convertSecondsToStringTime(this.controller.getWtVO().getPause()));
+        this.lblTimeDecimal.setText(String.format("%.5f", this.controller.calculateSecondsToHoursDecimal(this.controller.getWtVO().getSeconds())));
     }
 }
