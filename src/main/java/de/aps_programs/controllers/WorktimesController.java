@@ -114,9 +114,9 @@ public class WorktimesController extends WindowAdapter implements ActionListener
         }
 
         this.GUI.actualizeLblTime();
-//        if (this.wtVO.getSeconds() % minutesToSeconds(SAVE_TO_DB_EVERY_X_MINUTES) == 0) {
-//            this.saveCurrentWorktime();
-//        }
+        if (this.wtVO.getSeconds() % minutesToSeconds(SAVE_TO_DB_EVERY_X_MINUTES) == 0) {
+            this.saveCurrentWorktime();
+        }
     }
 
     private int minutesToSeconds(int minutes) { return minutes * 60; }
