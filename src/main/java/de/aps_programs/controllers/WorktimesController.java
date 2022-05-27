@@ -20,6 +20,8 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class WorktimesController extends WindowAdapter implements ActionListener {
 
+    public static final int SAVE_TO_DB_EVERY_X_MINUTES = 30;
+
     @Getter @Setter
     Timer GUI;
 
@@ -52,17 +54,22 @@ public class WorktimesController extends WindowAdapter implements ActionListener
         }
         else if (actionEvent.getSource() == this.GUI.getBtnStop()) {
             this.stop();
-            this.service.writeData(new WorktimesVO(
-                LocalDate.now().toString(),
-                this.calculateHoursAndMinutesToHoursDecimal(this.getWtVO().getSeconds()),
-                true,
-                this.getWtVO().getPause()
-                ));
+            saveCurrentWorktime();
         }
         else if (actionEvent.getSource() == this.timer) {
             this.calcAutoPause(this.getWtVO().getSeconds());
             this.timerHandle();
         }
+    }
+
+    private void saveCurrentWorktime() {
+
+        this.service.writeData(new WorktimesVO(
+            LocalDate.now().toString(),
+            this.calculateHoursAndMinutesToHoursDecimal(this.getWtVO().getSeconds()),
+            true,
+            this.getWtVO().getPause()
+            ));
     }
 
     public void start() {
@@ -98,6 +105,14 @@ public class WorktimesController extends WindowAdapter implements ActionListener
 
     public void timerHandle() {
         this.GUI.actualizeLblTime();
+        if (this.wtVO.getSeconds() % minutesToSeconds(SAVE_TO_DB_EVERY_X_MINUTES) == 0) {
+            this.saveCurrentWorktime();
+        }
+    }
+
+    private int minutesToSeconds(int minutes) {
+
+        return minutes * 60;
     }
 
     @Override
@@ -123,10 +138,10 @@ public class WorktimesController extends WindowAdapter implements ActionListener
     private void calcAutoPause(long seconds) {
 
         if (seconds / 3600f >= 9 && !this.pause45Min) {
-            this.getWtVO().setPause(Math.max(45 * 60, this.getWtVO().getPause()));
+            this.getWtVO().setPause(Math.max(this.minutesToSeconds(45), this.getWtVO().getPause()));
             this.pause45Min = true;
         } else if (seconds / 3600f >= 6 && !this.pause30Min) {
-            this.getWtVO().setPause(Math.max(30 * 60, this.getWtVO().getPause()));
+            this.getWtVO().setPause(Math.max(this.minutesToSeconds(30), this.getWtVO().getPause()));
             this.pause30Min = true;
         }
     }
