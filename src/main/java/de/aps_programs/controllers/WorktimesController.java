@@ -60,7 +60,7 @@ public class WorktimesController extends WindowAdapter implements ActionListener
                 ));
         }
         else if (actionEvent.getSource() == this.timer) {
-            this.calcAutoPause(this.getWtVO().getSeconds() + this.wtVO.getPause());
+            this.calcAutoPause(this.getWtVO().getSeconds());
             this.timerHandle();
         }
     }

@@ -97,7 +97,7 @@ public class Timer extends JFrame {
             this.lblPauseTime.setText(this.controller.convertSecondsToStringTime(Duration.between(this.controller.dtPauseStartTime, LocalDateTime.now()).getSeconds()));
         }
         else {
-            this.controller.getWtVO().setWorktime((Duration.between(this.controller.dtStartTime, LocalDateTime.now()).getSeconds() - this.controller.getWtVO().getPause()) / 3600f);
+            this.controller.getWtVO().setWorktime(Duration.between(this.controller.dtStartTime, LocalDateTime.now()).getSeconds());
             this.lblTime.setText(this.controller.convertSecondsToStringTime(this.controller.getWtVO().getSeconds()));
             this.lblPauseTime.setText(this.controller.convertSecondsToStringTime(this.controller.getWtVO().getPause()));
         }
