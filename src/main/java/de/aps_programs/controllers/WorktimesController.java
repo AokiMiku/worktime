@@ -20,7 +20,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class WorktimesController extends WindowAdapter implements ActionListener {
 
-    public static final int SAVE_TO_DB_EVERY_X_MINUTES = 30;
+    public static final int SAVE_TO_DB_EVERY_X_MINUTES = 15;
 
     @Getter @Setter
     TimerView GUI;
