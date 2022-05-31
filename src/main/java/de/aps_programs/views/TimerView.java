@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Getter @Setter
 @Component
-public class Timer extends JFrame {
+public class TimerView extends JFrame {
 
     private WorktimesController controller;
     private JPanel pnlView;
@@ -25,7 +25,7 @@ public class Timer extends JFrame {
     private JButton btnPause;
     private JButton btnStop;
 
-    public Timer(WorktimesController controller) {
+    public TimerView(WorktimesController controller) {
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setSize(240, 140);
         this.setLocationRelativeTo(null);

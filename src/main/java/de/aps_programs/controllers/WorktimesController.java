@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 import de.aps_programs.data.WorktimesVO;
 import de.aps_programs.services.WorktimesServices;
-import de.aps_programs.views.Timer;
+import de.aps_programs.views.TimerView;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class WorktimesController extends WindowAdapter implements ActionListener
     public static final int SAVE_TO_DB_EVERY_X_MINUTES = 30;
 
     @Getter @Setter
-    Timer GUI;
+    TimerView GUI;
 
     @Autowired
     private WorktimesServices service;
