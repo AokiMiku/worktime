@@ -82,7 +82,7 @@ public class WorktimesController extends WindowAdapter implements ActionListener
 
         this.service.writeData(new WorktimesVO(
             LocalDate.now().toString(),
-            this.calculateSecondsToHoursDecimal(this.getWtVO().getSeconds()),
+            this.secondsToHoursDecimal(this.getWtVO().getSeconds()),
             true,
             this.getWtVO().getPause()
             ));
@@ -113,11 +113,11 @@ public class WorktimesController extends WindowAdapter implements ActionListener
 
     public void stop() { this.timer.stop(); }
 
-    public double calculateSecondsToHoursDecimal(long seconds) { return seconds / 3600f; }
+    public double secondsToHoursDecimal(long seconds) { return seconds / 3600f; }
 
     public void timerHandle() {
 
-        this.getWtVO().setWorktime(this.calculateSecondsToHoursDecimal(Duration.between(this.startTime, LocalDateTime.now()).getSeconds()));
+        this.getWtVO().setWorktime(this.secondsToHoursDecimal(Duration.between(this.startTime, LocalDateTime.now()).getSeconds()));
 
         this.GUI.actualizeLblTime();
         if (this.wtVO.getSeconds() % minutesToSeconds(SAVE_TO_DB_EVERY_X_MINUTES) == 0) {
@@ -130,12 +130,10 @@ public class WorktimesController extends WindowAdapter implements ActionListener
     public String convertSecondsToTimeString(long seconds) {
 
         long remainingSeconds = seconds;
-        long minutes;
-        long hours;
 
-        minutes = remainingSeconds / 60;
-        remainingSeconds -= minutes * 60;
-        hours = minutes / 60;
+        long minutes = remainingSeconds / 60;
+        remainingSeconds -= (minutes * 60);
+        long hours = minutes / 60;
         minutes -= hours * 60;
 
         return String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds);
@@ -143,10 +141,10 @@ public class WorktimesController extends WindowAdapter implements ActionListener
 
     private void calcAutoPause(long seconds) {
 
-        if (seconds / 3600f >= 9 && !this.pause45Min) {
+        if (seconds / 3600f > 9 && !this.pause45Min) {
             this.getWtVO().setPause(Math.max(this.minutesToSeconds(45), this.getWtVO().getPause()));
             this.pause45Min = true;
-        } else if (seconds / 3600f >= 6 && !this.pause30Min) {
+        } else if (seconds / 3600f > 6 && !this.pause30Min) {
             this.getWtVO().setPause(Math.max(this.minutesToSeconds(30), this.getWtVO().getPause()));
             this.pause30Min = true;
         }

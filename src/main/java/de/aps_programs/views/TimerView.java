@@ -91,6 +91,6 @@ public class TimerView extends JFrame {
 
         this.lblTime.setText(this.controller.getWorktimeAsTimeString());
         this.lblPauseTime.setText(this.controller.getPauseAsTimeString());
-        this.lblTimeDecimal.setText(String.format("%.5f", this.controller.calculateSecondsToHoursDecimal(this.controller.getWtVO().getSeconds())));
+        this.lblTimeDecimal.setText(String.format("%.5f", this.controller.secondsToHoursDecimal(this.controller.getWtVO().getSeconds())));
     }
 }

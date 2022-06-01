@@ -14,8 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication (scanBasePackages = "de.aps_programs")
 @EntityScan("de.aps_programs")
 @EnableJpaRepositories("de.aps_programs")
-public class WorktimeSpringBootApplication
-		implements CommandLineRunner {
+public class WorktimeSpringBootApplication {
 
 	@Autowired
 	WorktimesController controller;
@@ -28,11 +27,5 @@ public class WorktimeSpringBootApplication
 
 			var ex = ctx.getBean(WorktimeSpringBootApplication.class);
 		});
-//		SpringApplication.run(WorktimeSpringBootApplication.class, args);
-	}
-
-	@Override
-	public void run(String... args) {
-//		new Timer(controller);
 	}
 }
