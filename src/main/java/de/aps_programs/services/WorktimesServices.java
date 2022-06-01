@@ -22,12 +22,13 @@ public class WorktimesServices {
         Worktimes wt = repository.findByDay(day.getDay());
         if (wt == null) {
             wt = new Worktimes();
-            wt.setId(repository.getTopByOrderByIdDesc().getId() + 1);
+            wt.setId(repository.count() + 1);
         }
         wt.setDay(day.getDay());
         wt.setWorktime(day.getWorktime());
         wt.setWorkday(true);
         wt.setPause(day.getPause());
+        wt.setStartingTime(day.getStartingTime());
         repository.save(wt);
     }
 

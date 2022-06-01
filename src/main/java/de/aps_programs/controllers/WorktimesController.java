@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import de.aps_programs.data.WorktimesVO;
 import de.aps_programs.services.WorktimesServices;
@@ -85,7 +86,7 @@ public class WorktimesController extends WindowAdapter implements ActionListener
                                           .Worktime(this.secondsToHoursDecimal(this.getWtVO().getSeconds()))
                                           .IsWorkday(true)
                                           .Pause(this.getWtVO().getPause())
-                                          .StartingTime(LocalDateTime.now().toLocalTime().toString())
+                                          .StartingTime(this.startTime.toLocalTime().toString())
                                           .build());
     }
 
@@ -97,7 +98,7 @@ public class WorktimesController extends WindowAdapter implements ActionListener
             this.GUI.getLblTimeDecimal().setText(this.defaultTextForLblTimeDecimal);
         }
         this.setWtVO(this.service.getSpecificDay(LocalDate.now()));
-        this.startTime = LocalDateTime.now().minusSeconds(this.getWtVO().getSeconds());
+        this.startTime = LocalDateTime.of(LocalDate.parse(this.getWtVO().getDay()), LocalTime.parse(this.getWtVO().getStartingTime()));
         this.timer.start();
     }
 
