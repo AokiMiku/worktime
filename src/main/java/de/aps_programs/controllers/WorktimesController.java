@@ -98,7 +98,13 @@ public class WorktimesController extends WindowAdapter implements ActionListener
             this.GUI.getLblTimeDecimal().setText(this.defaultTextForLblTimeDecimal);
         }
         this.setWtVO(this.service.getSpecificDay(LocalDate.now()));
-        this.startTime = LocalDateTime.of(LocalDate.parse(this.getWtVO().getDay()), LocalTime.parse(this.getWtVO().getStartingTime()));
+        if (this.getWtVO().getStartingTime() == null) {
+            this.startTime = LocalDateTime.now();
+        } else {
+            this.startTime = LocalDateTime.of(
+                LocalDate.parse(this.getWtVO().getDay()),
+                LocalTime.parse(this.getWtVO().getStartingTime()));
+        }
         this.timer.start();
     }
 
