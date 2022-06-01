@@ -35,8 +35,18 @@ public class WorktimesController extends WindowAdapter implements ActionListener
     public final String defaultTextForLblTime = "00:00:00";
     public final String defaultTextForLblTimeDecimal = "0.00000";
     public boolean pause;
-    public LocalDateTime dtPauseStartTime;
-    public LocalDateTime dtStartTime;
+    public LocalDateTime pauseStartTime;
+    public LocalDateTime startTime;
+    public String getPauseAsTimeString() {
+        if (this.pause) {
+            return convertSecondsToTimeString(Duration.between(this.pauseStartTime, LocalDateTime.now()).getSeconds());
+        } else {
+            return convertSecondsToTimeString(this.getWtVO().getPause());
+        }
+    }
+    public String getWorktimeAsTimeString() {
+        return this.convertSecondsToTimeString(this.getWtVO().getSeconds());
+    }
 
     public WorktimesController() {
 
@@ -86,17 +96,17 @@ public class WorktimesController extends WindowAdapter implements ActionListener
             this.GUI.getLblTimeDecimal().setText(this.defaultTextForLblTimeDecimal);
         }
         this.setWtVO(this.service.getSpecificDay(LocalDate.now()));
-        this.dtStartTime = LocalDateTime.now().minusSeconds(this.getWtVO().getSeconds());
+        this.startTime = LocalDateTime.now().minusSeconds(this.getWtVO().getSeconds());
         this.timer.start();
     }
 
     public void pauseToggle() {
         if (!this.pause) {
-            this.dtPauseStartTime = LocalDateTime.now();
+            this.pauseStartTime = LocalDateTime.now();
             this.pause = true;
         }
         else {
-            this.getWtVO().addPause(Duration.between(this.dtPauseStartTime, LocalDateTime.now()).getSeconds());
+            this.getWtVO().addPause(Duration.between(this.pauseStartTime, LocalDateTime.now()).getSeconds());
             this.pause = false;
         }
     }
@@ -106,12 +116,8 @@ public class WorktimesController extends WindowAdapter implements ActionListener
     public double calculateSecondsToHoursDecimal(long seconds) { return seconds / 3600f; }
 
     public void timerHandle() {
-        if (this.pause) {
-            this.getWtVO().setPause(Duration.between(this.dtPauseStartTime, LocalDateTime.now()).getSeconds());
-        } else {
-            this.getWtVO().setWorktime(this.calculateSecondsToHoursDecimal(Duration.between(this.dtStartTime, LocalDateTime.now()).getSeconds()));
 
-        }
+        this.getWtVO().setWorktime(this.calculateSecondsToHoursDecimal(Duration.between(this.startTime, LocalDateTime.now()).getSeconds()));
 
         this.GUI.actualizeLblTime();
         if (this.wtVO.getSeconds() % minutesToSeconds(SAVE_TO_DB_EVERY_X_MINUTES) == 0) {
@@ -121,7 +127,7 @@ public class WorktimesController extends WindowAdapter implements ActionListener
 
     private int minutesToSeconds(int minutes) { return minutes * 60; }
 
-    public String convertSecondsToStringTime(long seconds) {
+    public String convertSecondsToTimeString(long seconds) {
 
         long remainingSeconds = seconds;
         long minutes;
