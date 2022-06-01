@@ -35,8 +35,14 @@ public class WorktimesServices {
 
         Worktimes wt = repository.findByDay(specificDay.toString());
         if (wt == null) {
-            return new WorktimesVO(LocalDate.now().toString(), 0, true, 0);
+            return WorktimesVO.builder().build();
         }
-        return new WorktimesVO(wt.getDay(), wt.getWorktime(), wt.isWorkday(), wt.getPause());
+        return WorktimesVO.builder()
+                            .Day(wt.getDay())
+                            .Worktime(wt.getWorktime())
+                            .IsWorkday(wt.isWorkday())
+                            .Pause(wt.getPause())
+                            .StartingTime(wt.getStartingTime())
+                            .build();
     }
 }

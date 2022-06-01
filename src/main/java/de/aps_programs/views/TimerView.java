@@ -2,6 +2,7 @@ package de.aps_programs.views;
 
 import javax.swing.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import de.aps_programs.controllers.WorktimesController;
 import de.aps_programs.data.WorktimesVO;
@@ -43,7 +44,8 @@ public class TimerView extends JFrame {
 
         this.addWindowListener(this.controller);
 
-        this.controller.setWtVO(new WorktimesVO(LocalDate.now().toString(), 0, true, 0));
+        this.controller.setWtVO(WorktimesVO.builder().Day(LocalDate.now().toString()).Worktime(0).IsWorkday(true).Pause(0).StartingTime(
+            LocalDateTime.now().toLocalTime().toString()).build());
 
         this.pnlView = new JPanel();
 

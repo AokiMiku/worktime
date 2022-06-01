@@ -1,21 +1,31 @@
 package de.aps_programs.data;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 
 @Getter @Setter
 @AllArgsConstructor
+@Builder
 public class WorktimesVO {
 
-    private String Day;
+    @Builder.Default
+    private String Day = LocalDate.now().toString();
 
-    private double Worktime;
+    private String StartingTime;
 
-    private boolean IsWorkday;
+    @Builder.Default
+    private double Worktime = 0;
 
-    private long Pause;
+    @Builder.Default
+    private boolean IsWorkday = true;
+
+    @Builder.Default
+    private long Pause = 0;
 
     public long getSeconds() {
         return (long)(Worktime * 3600);

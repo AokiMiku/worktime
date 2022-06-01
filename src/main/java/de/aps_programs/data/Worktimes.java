@@ -24,6 +24,9 @@ public class Worktimes {
     @Column(name = "day")
     private String day;
 
+    @Column(name = "starting_time")
+    private String StartingTime;
+
     @Column(name = "worktime")
     private double worktime;
 

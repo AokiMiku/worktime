@@ -80,12 +80,13 @@ public class WorktimesController extends WindowAdapter implements ActionListener
 
     private void saveCurrentWorktime() {
 
-        this.service.writeData(new WorktimesVO(
-            LocalDate.now().toString(),
-            this.secondsToHoursDecimal(this.getWtVO().getSeconds()),
-            true,
-            this.getWtVO().getPause()
-            ));
+        this.service.writeData(WorktimesVO.builder()
+                                          .Day(LocalDate.now().toString())
+                                          .Worktime(this.secondsToHoursDecimal(this.getWtVO().getSeconds()))
+                                          .IsWorkday(true)
+                                          .Pause(this.getWtVO().getPause())
+                                          .StartingTime(LocalDateTime.now().toLocalTime().toString())
+                                          .build());
     }
 
     public void start() {
