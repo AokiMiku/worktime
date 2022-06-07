@@ -11,9 +11,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
-@SpringBootApplication (scanBasePackages = "de.aps_programs")
-@EntityScan("de.aps_programs")
-@EnableJpaRepositories("de.aps_programs")
+@SpringBootApplication
 public class WorktimeSpringBootApplication {
 
 	@Autowired

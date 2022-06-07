@@ -40,7 +40,7 @@ public class WorktimesController extends WindowAdapter implements ActionListener
     public LocalDateTime startTime;
     public String getPauseAsTimeString() {
         if (this.pause) {
-            return convertSecondsToTimeString(Duration.between(this.pauseStartTime, LocalDateTime.now()).getSeconds());
+            return convertSecondsToTimeString(Duration.between(this.pauseStartTime, LocalDateTime.now()).getSeconds() + this.getWtVO().getPause());
         } else {
             return convertSecondsToTimeString(this.getWtVO().getPause());
         }
