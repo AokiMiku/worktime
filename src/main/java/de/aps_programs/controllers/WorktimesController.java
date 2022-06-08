@@ -37,7 +37,7 @@ public class WorktimesController extends WindowAdapter implements ActionListener
     public final String defaultTextForLblTimeDecimal = "0.00000";
     public boolean pause;
     public LocalDateTime pauseStartTime;
-    public LocalDateTime startTime;
+    public LocalTime startTime;
     public String getPauseAsTimeString() {
         if (this.pause) {
             return convertSecondsToTimeString(Duration.between(this.pauseStartTime, LocalDateTime.now()).getSeconds() + this.getWtVO().getPause());
@@ -52,6 +52,13 @@ public class WorktimesController extends WindowAdapter implements ActionListener
     public WorktimesController() {
 
         this.timer = new javax.swing.Timer(100, this);
+        this.setWtVO(WorktimesVO.builder()
+                                .Day(LocalDate.now().toString())
+                                .Worktime(0)
+                                .IsWorkday(true)
+                                .Pause(0)
+                                .StartingTime(LocalDateTime.now().toLocalTime().toString())
+                                .build());
     }
 
     @Override
@@ -68,7 +75,7 @@ public class WorktimesController extends WindowAdapter implements ActionListener
             saveCurrentWorktime();
         }
         else if (actionEvent.getSource() == this.timer) {
-            this.calcAutoPause(this.getWtVO().getSeconds());
+            this.calcAutoPause(this.getWtVO().getSeconds(), this.getWtVO().getPause());
             this.timerHandle();
         }
     }
@@ -81,13 +88,7 @@ public class WorktimesController extends WindowAdapter implements ActionListener
 
     private void saveCurrentWorktime() {
 
-        this.service.writeData(WorktimesVO.builder()
-                                          .Day(LocalDate.now().toString())
-                                          .Worktime(this.secondsToHoursDecimal(this.getWtVO().getSeconds()))
-                                          .IsWorkday(true)
-                                          .Pause(this.getWtVO().getPause())
-                                          .StartingTime(this.startTime.toLocalTime().toString())
-                                          .build());
+        this.service.writeData(this.wtVO);
     }
 
     public void start() {
@@ -99,12 +100,12 @@ public class WorktimesController extends WindowAdapter implements ActionListener
         }
         this.setWtVO(this.service.getSpecificDay(LocalDate.now()));
         if (this.getWtVO().getStartingTime() == null) {
-            this.startTime = LocalDateTime.now();
+            this.startTime = LocalTime.now();
+            this.getWtVO().setStartingTime(this.startTime.toString().substring(0, 8));
         } else {
-            this.startTime = LocalDateTime.of(
-                LocalDate.parse(this.getWtVO().getDay()),
-                LocalTime.parse(this.getWtVO().getStartingTime()));
+            this.startTime = LocalTime.parse(this.getWtVO().getStartingTime());
         }
+        this.GUI.getLblStartingTime().setText(this.getWtVO().getStartingTime());
         this.timer.start();
     }
 
@@ -147,12 +148,12 @@ public class WorktimesController extends WindowAdapter implements ActionListener
         return String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds);
     }
 
-    private void calcAutoPause(long seconds) {
+    private void calcAutoPause(long seconds, long pauseSeconds) {
 
-        if (seconds / 3600f > 9 && !this.pause45Min) {
+        if ((seconds - pauseSeconds) / 3600f > 9 && !this.pause45Min) {
             this.getWtVO().setPause(Math.max(this.minutesToSeconds(45), this.getWtVO().getPause()));
             this.pause45Min = true;
-        } else if (seconds / 3600f > 6 && !this.pause30Min) {
+        } else if ((seconds - pauseSeconds) / 3600f > 6 && !this.pause30Min) {
             this.getWtVO().setPause(Math.max(this.minutesToSeconds(30), this.getWtVO().getPause()));
             this.pause30Min = true;
         }
