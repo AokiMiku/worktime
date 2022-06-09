@@ -23,6 +23,9 @@ public class WorktimesServices {
         if (wt == null) {
             wt = new Worktimes();
             wt.setId(repository.count() + 1);
+            while(repository.findById(wt.getId()).isPresent()) {
+                wt.setId(wt.getId() + 1);
+            }
         }
         wt.setDay(day.getDay());
         wt.setWorktime(day.getWorktime());
