@@ -15,13 +15,14 @@ import de.aps_programs.views.TimerView;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 
 @Controller
 public class WorktimesController extends WindowAdapter implements ActionListener {
 
-    public static final int SAVE_TO_DB_EVERY_X_MINUTES = 15;
+    public final int SAVE_TO_DB_EVERY_X_MINUTES;
 
     @Getter @Setter
     TimerView GUI;
@@ -49,8 +50,9 @@ public class WorktimesController extends WindowAdapter implements ActionListener
         return this.convertSecondsToTimeString(this.getWtVO().getSeconds());
     }
 
-    public WorktimesController() {
+    public WorktimesController(@Value("${config.saveToDbEveryXMinutes}") int saveToDbEveryXMinutes) {
 
+        SAVE_TO_DB_EVERY_X_MINUTES = saveToDbEveryXMinutes;
         this.timer = new javax.swing.Timer(100, this);
         this.setWtVO(WorktimesVO.builder()
                                 .Day(LocalDate.now().toString())
@@ -72,10 +74,9 @@ public class WorktimesController extends WindowAdapter implements ActionListener
         }
         else if (actionEvent.getSource() == this.GUI.getBtnStop()) {
             this.stop();
-            saveCurrentWorktime();
+            this.saveCurrentWorktime();
         }
         else if (actionEvent.getSource() == this.timer) {
-            this.calcAutoPause(this.getWtVO().getSeconds(), this.getWtVO().getPause());
             this.timerHandle();
         }
     }
@@ -126,6 +127,7 @@ public class WorktimesController extends WindowAdapter implements ActionListener
 
     public void timerHandle() {
 
+        this.calcAutoPause(this.getWtVO().getSeconds(), this.getWtVO().getPause());
         this.getWtVO().setWorktime(this.secondsToHoursDecimal(Duration.between(this.startTime, LocalDateTime.now()).getSeconds()));
 
         this.GUI.actualizeLblTime();
@@ -149,6 +151,10 @@ public class WorktimesController extends WindowAdapter implements ActionListener
     }
 
     private void calcAutoPause(long seconds, long pauseSeconds) {
+
+        if (this.pause) {
+            return;
+        }
 
         if ((seconds - pauseSeconds) / 3600f > 9 && !this.pause45Min) {
             this.getWtVO().setPause(Math.max(this.minutesToSeconds(45), this.getWtVO().getPause()));
