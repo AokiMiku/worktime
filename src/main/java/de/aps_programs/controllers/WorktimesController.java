@@ -99,13 +99,18 @@ public class WorktimesController extends WindowAdapter implements ActionListener
             this.GUI.getLblTime().setText(this.defaultTextForLblTime);
             this.GUI.getLblTimeDecimal().setText(this.defaultTextForLblTimeDecimal);
         }
+
         this.setWtVO(this.service.getSpecificDay(LocalDate.now()));
+
         if (this.getWtVO().getStartingTime() == null) {
             this.startTime = LocalTime.now();
             this.getWtVO().setStartingTime(this.startTime.toString().substring(0, 8));
         } else {
             this.startTime = LocalTime.parse(this.getWtVO().getStartingTime());
         }
+
+        this.GUI.getLblEndingTime().setText(this.calcEstimatedEndingTime(this.startTime).toString().substring(0, 8));
+
         this.GUI.getLblStartingTime().setText(this.getWtVO().getStartingTime());
         this.timer.start();
     }
@@ -163,5 +168,10 @@ public class WorktimesController extends WindowAdapter implements ActionListener
             this.getWtVO().setPause(Math.max(this.minutesToSeconds(30), this.getWtVO().getPause()));
             this.pause30Min = true;
         }
+    }
+
+    private LocalTime calcEstimatedEndingTime(LocalTime startTime) {
+
+        return startTime.plusMinutes(8 * 60 + 30);
     }
 }

@@ -20,7 +20,10 @@ public class TimerView extends JFrame {
     private JPanel pnlTime;
     private JPanel pnlButtons;
     private JLabel lblTime;
+    private JLabel lblStartingTimeText;
     private JLabel lblStartingTime;
+    private JLabel lblEndingTimeText;
+    private JLabel lblEndingTime;
     private JLabel lblTimeDecimal;
     private JLabel lblPauseTime;
     private JButton btnStart;
@@ -29,7 +32,7 @@ public class TimerView extends JFrame {
 
     public TimerView(WorktimesController controller) {
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        this.setSize(240, 160);
+        this.setSize(240, 220);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("ApS Util - Worktime");
@@ -52,6 +55,7 @@ public class TimerView extends JFrame {
 
         this.pnlButtons = new JPanel();
 
+        this.lblStartingTimeText = new JLabel("Starting Time:");
         this.lblStartingTime = new JLabel(this.controller.defaultTextForLblTime);
 
         this.lblTime = new JLabel(this.controller.defaultTextForLblTime);
@@ -59,6 +63,9 @@ public class TimerView extends JFrame {
         this.lblTimeDecimal = new JLabel(this.controller.defaultTextForLblTimeDecimal);
 
         this.lblPauseTime = new JLabel(this.controller.defaultTextForLblTime);
+
+        this.lblEndingTimeText = new JLabel("Est. Ending Time:");
+        this.lblEndingTime = new JLabel(this.controller.defaultTextForLblTime);
 
         this.btnStart = new JButton("Start");
         this.btnStart.setSize(50, 25);
@@ -75,10 +82,13 @@ public class TimerView extends JFrame {
 
     public void addComponents() {
 
+        this.pnlTime.add(this.lblStartingTimeText);
         this.pnlTime.add(this.lblStartingTime);
         this.pnlTime.add(this.lblTime);
         this.pnlTime.add(this.lblTimeDecimal);
         this.pnlTime.add(this.lblPauseTime);
+        this.pnlTime.add(this.lblEndingTimeText);
+        this.pnlTime.add(this.lblEndingTime);
 
         this.pnlView.add(this.pnlTime);
 
