@@ -14,9 +14,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 public class WorktimeSpringBootApplication {
 
-	@Autowired
-	WorktimesController controller;
-
 	public static void main(String[] args) {
 		var ctx = new SpringApplicationBuilder(WorktimeSpringBootApplication.class)
 			.headless(false).run(args);
