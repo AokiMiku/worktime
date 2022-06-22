@@ -108,7 +108,12 @@ public class WorktimesController extends WindowAdapter implements ActionListener
             this.startTime = LocalTime.parse(this.getWtVO().getStartingTime());
         }
 
-        this.GUI.getLblEndingTime().setText(this.calcEstimatedEndingTime(this.startTime).toString().substring(0, 8));
+        LocalTime end = this.calcEstimatedEndingTime(this.startTime);
+        if (end.toString().length() > 5) {
+            this.GUI.getLblEndingTime().setText(end.toString().substring(0, 8));
+        } else {
+            this.GUI.getLblEndingTime().setText(end.toString().substring(0, 5));
+        }
 
         this.GUI.getLblStartingTime().setText(this.getWtVO().getStartingTime());
         this.timer.start();

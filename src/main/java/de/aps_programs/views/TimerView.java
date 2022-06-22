@@ -32,7 +32,7 @@ public class TimerView extends JFrame {
 
     public TimerView(WorktimesController controller) {
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        this.setSize(240, 220);
+        this.setSize(240, 200);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("ApS Util - Worktime");
